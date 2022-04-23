@@ -68,10 +68,10 @@ def play_game(board_state):
     while True:
         print("The current board is:")
         display_board(board_state["board"])
-        board_state["turn_count"] += 1
         response = input()
         if response == "q":
             return board_state
+        board_state["turn_count"] += 1
         index = int(response) - 1
         board_state["board"][index] = determine_turn(
             board_state["turn_count"])
