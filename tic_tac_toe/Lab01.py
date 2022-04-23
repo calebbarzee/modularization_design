@@ -26,10 +26,10 @@ def initialize_blank_board():
 
 def read_board():
     """Read the previously existing board from the file if it exists."""
-
     with open("tic_tac_toe/board.json", "r") as board_file:
-        print(board_file.read())
-        board_state = json.loads(board_file.read())
+        text = board_file.read()
+        # print(text)
+        board_state = json.loads(text)
 
     return board_state
 
@@ -62,22 +62,22 @@ def determine_turn(turn_count):
 
 def play_game(board_state):
     """Play the game of Tic-Tac-Toe."""
-    # Put game play code here. Return False when the user has indicated they are done.
-    print(board_state)
+    # Put game play code here.
+    # print(board_state)
     while True:
         print("The current board is:")
-        current_board = board_state["board"]
-        display_board(current_board)
-        board_state.turn_count += 1
+        display_board(board_state["board"])
+        board_state["turn_count"] += 1
         response = input()
         if response == "q":
             return board_state
-        board_state["board"][response] = determine_turn(board_state.turn_count)
-        if not game_done(board_state["board"]):
-            initialize_blank_board()
+        index = int(response) - 1
+        board_state["board"][index] = determine_turn(
+            board_state["turn_count"])
+        if game_done(board_state["board"]):
+            display_board(board_state["board"])
+            board_state = initialize_blank_board()
             return board_state
-
-# Why would we ever desire to hide the results from the user?
 
 
 def game_done(board, message=True):
@@ -86,6 +86,7 @@ def game_done(board, message=True):
        You do not need to edit it in any way.
        If message == True, then we display a message to the user.
        Otherwise, no message is displayed. """
+# Why would we ever desire to hide the results from the user?
 
     # Game is finished if someone has completed a row.
     for row in range(3):
