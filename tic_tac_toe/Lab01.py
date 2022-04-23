@@ -5,20 +5,21 @@
 # 3. Assignment Description:
 #      Play the game of Tic-Tac-Toe
 # 4. What was the hardest part? Be as specific as possible.
-#      -a paragraph or two about how the assignment went for you-
+#      The assignment went okay. I really felt like some of the stuff was unnecessary,
+#      or even bad programming practice (for instance the global variable). The hardest part
+#      was probably revising some of the previously written code to be more concise.
 # 5. How long did it take for you to complete the assignment?
-#      -total time in hours including reading the assignment and submitting the program-
+#      3 hours
 import os
 import json
-import constants
 
 
 def initialize_blank_board():
     board_state = {
         "board": [
-            constants.BLANK, constants.BLANK, constants.BLANK,
-            constants.BLANK, constants.BLANK, constants.BLANK,
-            constants.BLANK, constants.BLANK, constants.BLANK],
+            " ", " ", " ",
+            " ", " ", " ",
+            " ", " ", " "],
         "turn_count": 0
     }
     return board_state
@@ -90,21 +91,21 @@ def game_done(board, message=True):
 
     # Game is finished if someone has completed a row.
     for row in range(3):
-        if board[row * 3] != constants.BLANK and board[row * 3] == board[row * 3 + 1] == board[row * 3 + 2]:
+        if board[row * 3] != " " and board[row * 3] == board[row * 3 + 1] == board[row * 3 + 2]:
             if message:
                 print("The game was won by", board[row * 3])
             return True
 
     # Game is finished if someone has completed a column.
     for col in range(3):
-        if board[col] != constants.BLANK and board[col] == board[3 + col] == board[6 + col]:
+        if board[col] != " " and board[col] == board[3 + col] == board[6 + col]:
             if message:
                 print("The game was won by", board[col])
             return True
 
     # Game is finished if someone has a diagonal.
-    if board[4] != constants.BLANK and (board[0] == board[4] == board[8] or
-                                        board[2] == board[4] == board[6]):
+    if board[4] != " " and (board[0] == board[4] == board[8] or
+                            board[2] == board[4] == board[6]):
         if message:
             print("The game was won by", board[4])
         return True
@@ -112,7 +113,7 @@ def game_done(board, message=True):
     # Game is finished if all the squares are filled.
     tie = True
     for square in board:
-        if square == constants.BLANK:
+        if square == " ":
             tie = False
     if tie:
         if message:
