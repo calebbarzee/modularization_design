@@ -1,0 +1,6 @@
+"board_state" {
+    "board": [
+        constants.BLANK, constants.BLANK, constants.BLANK,
+        constants.BLANK, constants.BLANK, constants.BLANK,
+        constants.BLANK, constants.BLANK, constants.BLANK]
+}
