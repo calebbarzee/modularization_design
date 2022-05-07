@@ -5,9 +5,9 @@
 # 3. Assignment Description:
 #      This program gets a month and year from the user. It then displays the month requested.
 # 4. What was the hardest part? Be as specific as possible.
-#      -a paragraph or two about how the assignment went for you-
+#      off by one errors in the for loops
 # 5. How long did it take for you to complete the assignment?
-#      -total time in hours including reading the assignment and submitting the program-
+#      4 hours
 
 
 from operator import truediv
@@ -93,35 +93,37 @@ def get_day_of_week(month, year):
     # day_of_week = (years_to_days + months_to_days) % 7
     # return day_of_week
     year_diff = year - 1753
+    months_to_days = 0
+    years_to_days = 0
     day_of_week = 1
+    if year_diff == 0 and month == 1:
+        return day_of_week
     if year_diff > 0:
         leap_years = 0
-        for i in range(year_diff):
-            if is_leap_year(1753 - i):
+        for i in range(1, year_diff):
+            if is_leap_year(1753 + i):
                 leap_years += 1
         normal_years = year_diff - leap_years
         years_to_days = normal_years*365 + leap_years*366
-        months_to_days = 0
-        if month > 1:
-            for i in range(month):
-                current_month = get_days_of_month(i, year)
-                months_to_days += current_month
-        day_of_week = (years_to_days + months_to_days) % 7
-        match day_of_week:
-            case 0:
-                day_of_week = 1
-            case 1:
-                day_of_week = 2
-            case 2:
-                day_of_week = 3
-            case 3:
-                day_of_week = 4
-            case 4:
-                day_of_week = 5
-            case 5:
-                day_of_week = 6
-            case 6:
-                day_of_week = 0
+    if month > 1:
+        for i in range(1, month):
+            months_to_days += get_days_of_month(i, year)
+    day_of_week = (years_to_days + months_to_days) % 7
+    match day_of_week:
+        case 0:
+            day_of_week = 1
+        case 1:
+            day_of_week = 2
+        case 2:
+            day_of_week = 3
+        case 3:
+            day_of_week = 4
+        case 4:
+            day_of_week = 5
+        case 5:
+            day_of_week = 6
+        case 6:
+            day_of_week = 0
     return day_of_week
 
 
