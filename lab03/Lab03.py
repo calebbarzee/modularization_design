@@ -12,6 +12,8 @@
 
 from operator import truediv
 
+from raylibpy import Int
+
 
 def display_month(day_of_week, num_days):
     '''Display a calendar table'''
@@ -128,6 +130,10 @@ def get_day_of_week(month, year):
 
 
 def main():
+    # fuction call to execute test cases
+    test_cases()
+    # fuction call to execute test cases
+
     month = 0
     reenter = True
     while reenter:
@@ -137,6 +143,49 @@ def main():
     year = 0
     while year < 1753:
         year = int(input("Please enter the desired year (1753+): "))
+    days_of_month = get_days_of_month(month, year)
+    day_of_week = get_day_of_week(month, year)
+    display_month(day_of_week, days_of_month)
+
+
+def test_cases():
+    """ for automation of test cases """
+    print("\n Test case 1:")
+    automated_main(1, 1753)
+    print("\n Test case 2:")
+    automated_main(2, 1753)
+    print("\n Test case 3:")
+    automated_main(1, 1754)
+    print("\n Test case 4:")
+    automated_main(2, 1756)
+    print("\n Test case 5:")
+    automated_main(2, 1800)
+    print("\n Test case 6:")
+    automated_main(2, 2000)
+    print("\n Test case 7:")
+    automated_main("error", 0)
+    automated_main(0, 0)
+    automated_main(13, 0)
+    automated_main(11, "error")
+    automated_main(11, -1)
+    automated_main(11, 1752)
+    automated_main(11, 2019)
+
+
+def automated_main(month, year):
+    """ runs same functions as main without user input """
+    if type(month) != type(0):
+        print("Error: invalid month")
+        return
+    if month < 1 or month > 12:
+        print("Error: invalid month")
+        return
+    if type(year) != type(0):
+        print("Error: invalid year")
+        return
+    if year < 1753:
+        print("Error: invalid year")
+        return
     days_of_month = get_days_of_month(month, year)
     day_of_week = get_day_of_week(month, year)
     display_month(day_of_week, days_of_month)
