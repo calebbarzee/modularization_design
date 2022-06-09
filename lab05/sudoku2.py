@@ -18,9 +18,28 @@ def get_filename():
     return filename
 
 
+def get_action():
+    action = input(
+        "Please type your desired action ('"'g'"' to guess, '"'p'"' for possible values, and '"'s'"' to save)\nAction: ")
+    return action
+
+
 def get_coor():
-    coor = input("Please enter the desired coordinate: ").upper
+    coor = input(
+        "Please enter the desired coordinate (A1-I9): ").strip().upper()
     # make sure it's a valid coordinate
+    match str(coor)[0]:
+        case "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I": is_valid = True
+        case _: is_valid = False
+
+    match int(str(coor)[1]):
+        case 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9: is_valid = True
+        case _: is_valid = False
+
+    if not is_valid:
+        print("Unacceptable value entered.")
+        get_coor()
+
     match coor:
         case "A1": coor = (0, 0)
         case "A2": coor = (1, 0)
@@ -104,14 +123,22 @@ def get_coor():
         case "I8": coor = (7, 8)
         case "I9": coor = (8, 8)
 
-    check_coor(coor)
+    return coor
 
 
 def get_value():
-    value = int(input("Please enter the desired value: "))
+    value = int(input(
+        "Please enter the desired value (1-9): "))
     # make sure it's a valid value
+    match value:
+        case 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9: is_valid = True
+        case _: is_valid = False
 
-    check_value(value)
+    if not is_valid:
+        print("Unacceptable value entered.")
+        get_value()
+
+    return value
 
 
 def display_board(board):
@@ -138,6 +165,10 @@ def display_board(board):
             f"\t{i+1}  {board[i][0]} {board[i][1]} {board[i][2]}|{board[i][3]} {board[i][4]} {board[i][5]}|{board[i][6]} {board[i][7]} {board[i][8]}")
         if i == 2 or i == 5:
             print("\t -------+-----+-----")
+
+
+def display_possible():
+    pass
 
 
 def save_board(board):
@@ -175,16 +206,25 @@ def convert_array(filename):
     # current is also to be updated so the game know which branch to start with
 
 
-def check_board():
-    pass
+def check_coor(coor, board):
+    assert type(coor) == type((1, 1))
+    if board[coor[0]][coor[1]] == 0:
+        return True
+    return False
 
 
-def check_coor(coor):
-    pass
-
-
-def check_value(value):
+def check_value(coor, value, board):
     assert type(value) == type(1)
+    assert type(coor) == type((1, 1))
+
+
+def check_board(board):
+    # Ensures that the board is in a playable state.
+    # Checks for win condition of all values filled.
+    for i in range(9):
+        for j in range(9):
+            if board[i][j] == 0:
+                return "unfilled"
 
 
 def update_possible():
@@ -213,8 +253,23 @@ def main():
     # filename = get_filename()
     # board = convert_array(filename)
     board = load_board()
-    display_board(board["board1"]["1"])
-    save_board(board)
+    while check_board(board["board1"]["1"]) == "unfilled":
+        display_board(board["board1"]["1"])
+        action = get_action()
+        if action == "p":
+            display_possible()
+        elif action == "s":
+            save_board(board)
+            print("Your game has been saved. Thank you for playing.")
+            break
+        coor = get_coor()
+        while not check_coor(coor, board["board1"]["1"]):
+            print("This Coordinate is already filled. Please try another.")
+            coor = get_coor()
+        value = get_value()
+        while not check_value(coor, value, board["board1"]["1"]):
+            print("This value is not valid in this location. Please try another.")
+            value = get_value()
 
 
 if __name__ == "__main__":
