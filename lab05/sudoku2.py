@@ -155,14 +155,25 @@ def display_board(board):
     #           7  5    |  7  |    3
     #           8  4    |1   3|    6
     #           9  9 3 2|     |7 1 4
+    d_board = [[], [], [], [], [], [], [], [], []]
+    for i in range(9):
+        d_board[i].append(board[i][0])
+        d_board[i].append(board[i][1])
+        d_board[i].append(board[i][2])
+        d_board[i].append(board[i][3])
+        d_board[i].append(board[i][4])
+        d_board[i].append(board[i][5])
+        d_board[i].append(board[i][6])
+        d_board[i].append(board[i][7])
+        d_board[i].append(board[i][8])
     for i in range(9):
         for j in range(9):
-            if board[i][j] == 0:
-                board[i][j] = " "
+            if d_board[i][j] == 0:
+                d_board[i][j] = " "
     print("\t   A B C D E F G H I")
     for i in range(9):
         print(
-            f"\t{i+1}  {board[i][0]} {board[i][1]} {board[i][2]}|{board[i][3]} {board[i][4]} {board[i][5]}|{board[i][6]} {board[i][7]} {board[i][8]}")
+            f"\t{i+1}  {d_board[i][0]} {d_board[i][1]} {d_board[i][2]}|{d_board[i][3]} {d_board[i][4]} {d_board[i][5]}|{d_board[i][6]} {d_board[i][7]} {d_board[i][8]}")
         if i == 2 or i == 5:
             print("\t -------+-----+-----")
 
@@ -216,6 +227,7 @@ def check_coor(coor, board):
 def check_value(coor, value, board):
     assert type(value) == type(1)
     assert type(coor) == type((1, 1))
+    return True
 
 
 def check_board(board):
@@ -225,6 +237,13 @@ def check_board(board):
         for j in range(9):
             if board[i][j] == 0:
                 return "unfilled"
+
+
+def store_value(coor, value, board):
+    assert type(value) == type(1)
+    assert type(coor) == type((1, 1))
+    board[coor[0]][coor[1]] = value
+    return board
 
 
 def update_possible():
@@ -253,8 +272,9 @@ def main():
     # filename = get_filename()
     # board = convert_array(filename)
     board = load_board()
-    while check_board(board["board1"]["1"]) == "unfilled":
-        display_board(board["board1"]["1"])
+    current_board = board["board1"]["1"]
+    while check_board(current_board) == "unfilled":
+        display_board(current_board)
         action = get_action()
         if action == "p":
             display_possible()
@@ -263,13 +283,14 @@ def main():
             print("Your game has been saved. Thank you for playing.")
             break
         coor = get_coor()
-        while not check_coor(coor, board["board1"]["1"]):
+        while not check_coor(coor, current_board):
             print("This Coordinate is already filled. Please try another.")
             coor = get_coor()
         value = get_value()
-        while not check_value(coor, value, board["board1"]["1"]):
+        while not check_value(coor, value, current_board):
             print("This value is not valid in this location. Please try another.")
             value = get_value()
+        current_board = store_value(coor, value, current_board)
 
 
 if __name__ == "__main__":
